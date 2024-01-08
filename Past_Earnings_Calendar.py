@@ -8,6 +8,15 @@ from pprint import pprint
 import os
 
 def getSource(current_date):
+    '''
+    scrapes the NASDAQ earnings calender for earnings releases when given a date
+
+    Args:
+        current_date (datetime.date): The age of your son
+ 
+    Returns:
+        data (dict): dictionary format of the json data scraped 
+    '''
     print("Earnings date is: ", current_date)
 
     year = current_date.year
@@ -36,13 +45,22 @@ def getSource(current_date):
     payload = {"date":f"{year}-{month}-{day}"} 
     source = requests.get( url=url, headers=headers, params=payload, verify=True ) 
     data = source.json()
-
+    
     # As to prevent overbearing the website and getting throttled
     time.sleep(.25)
 
     return data
 
 def siftSource(source, dictionary, earningsdate):
+    '''
+    Args:
+        source (dict): dictionary generated from getSource function
+        dictionary (dict): dictionary of the dataframe format
+        earningdate (dict): date of when earnings is released
+ 
+    Returns:
+        data (dict): dictionary format of the json data scraped
+    '''
     try:
         for i in range(0,len(source['data']['rows'])):
             symbol = source['data']['rows'][i]['symbol']
@@ -132,6 +150,7 @@ def main():
 
     for n in range((today - start_date).days + 1):
         earningsdate = start_date + timedelta(days=n)
+        print(type(earningsdate))
         source = getSource(earningsdate)
         dict_ = siftSource(source, dictionary, earningsdate)
 
