@@ -7,7 +7,7 @@ import time
 from pprint import pprint
 
 def getSource(current_date):
-    print("Today date is: ", current_date)
+    print("Earnings date is: ", current_date)
 
     year = current_date.year
 
@@ -82,7 +82,7 @@ def main():
     today = date.today()
     lookBackPeriod = 30
     start_date = today - timedelta(days=lookBackPeriod)
-    dict_ = {
+    dictionary = {
         'Symbol': [],
         'Release': [],
         'Date': [],
@@ -92,8 +92,11 @@ def main():
     for n in range((today - start_date).days + 1):
         earningsdate = start_date + timedelta(days=n)
         source = getSource(earningsdate)
-        dict_ = siftSource(source, dict_, earningsdate)
+        dict_ = siftSource(source, dictionary, earningsdate)
 
+    df = pd.DataFrame.from_dict(dict_)
+    print(df)
+    df.to_csv("Earnings Calender above 500 Mil Mrkt Cap.csv")
     return
 
 if __name__ == '__main__':
