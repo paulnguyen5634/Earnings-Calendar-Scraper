@@ -85,19 +85,24 @@ def getDirList():
 
     return dir_list
 
-def checkFile(csvFile, dir_list, dictionary):
+def saveData(csvFile, dir_list, dictionary):
     '''
     Checks to see if the csv for prior earnings tickers exists, if it does add new rows, if it doesnt make new csv from Dataframe
     '''
     if csvFile in dir_list: 
-        # If it is there read the data in
+        # If it is there, read the data in
         df = pd.read_csv(csvFile)
 
+        # Make another DF from scraped data
         df_new = pd.DataFrame.from_dict(dictionary)
 
+        # Concatenate two dataframes and drop duplicates
         concatenated_df = pd.concat([df, df_new], axis=0)
-        # Keep only the first occurrence of each duplicated row
-        result_df = concatenated_df.drop_duplicates(subset='ID', keep='first')
+        result_df = concatenated_df.drop_duplicates(subset=['Symbol', 'Date'], keep='first')
+
+        print('Dataframes Concatenated!')
+        print(result_df)
+        print('Data has been saved!')
         result_df.to_csv("Earnings Calender above 500 Mil Mrkt Cap.csv")
         
     else:
@@ -107,6 +112,7 @@ def checkFile(csvFile, dir_list, dictionary):
         '''
         df = pd.DataFrame.from_dict(dictionary)
         df.to_csv("Earnings Calender above 500 Mil Mrkt Cap.csv")
+        print('Data has been saved!')
 
     return
 
@@ -117,9 +123,9 @@ def main():
     lookBackPeriod = 30
     start_date = today - timedelta(days=lookBackPeriod)
     dictionary = {
+        'Date': [],
         'Symbol': [],
         'Release': [],
-        'Date': [],
         'MarketCap': [],
     }
     csvFile = 'Earnings Calender above 500 Mil Mrkt Cap'
@@ -129,9 +135,8 @@ def main():
         source = getSource(earningsdate)
         dict_ = siftSource(source, dictionary, earningsdate)
 
-    df = pd.DataFrame.from_dict(dict_)
-    print(df)
-    df.to_csv("Earnings Calender above 500 Mil Mrkt Cap.csv")
+    dir_list = getDirList()
+    saveData(csvFile, dir_list, dict_)
     return
 
 if __name__ == '__main__':
