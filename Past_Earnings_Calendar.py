@@ -40,8 +40,7 @@ def getSource():
 
     return data
 
-def siftSource(source):
-
+def siftSource(source, dictionary, earningsdate):
     try:
         for i in range(0,len(source['data']['rows'])):
             symbol = source['data']['rows'][i]['symbol']
@@ -60,8 +59,25 @@ def siftSource(source):
             numAnalysts = source['data']['rows'][i]['noOfEsts']
             
             releaseTime = source['data']['rows'][i]['time'] 
-    except:
+
+            try:
+                if int(mrkt_cap) > 500000000:
+                    dictionary['Date'].append(earningsdate)
+                    dictionary['Release'].append(releaseTime)
+                    dictionary['Symbol'].append(symbol)
+                    dictionary['MarketCap'].append(mrktCap)
+            except ValueError:
+                print("No Supplied Market Cap") 
+                continue 
+
+    except TypeError:
         print('No Earnings today')
+
+    return dictionary
+
+def createDF():
+
+
 
     return
 
