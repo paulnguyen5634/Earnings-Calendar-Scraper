@@ -86,7 +86,9 @@ def getDirList():
     return dir_list
 
 def checkFile(csvFile, dir_list, dictionary):
-
+    '''
+    Checks to see if the csv for prior earnings tickers exists, if it does add new rows, if it doesnt make new csv from Dataframe
+    '''
     if csvFile in dir_list: 
         # If it is there read the data in
         df = pd.read_csv(csvFile)
@@ -105,7 +107,7 @@ def checkFile(csvFile, dir_list, dictionary):
         '''
         df = pd.DataFrame.from_dict(dictionary)
         df.to_csv("Earnings Calender above 500 Mil Mrkt Cap.csv")
-        
+
     return
 
 def main():
