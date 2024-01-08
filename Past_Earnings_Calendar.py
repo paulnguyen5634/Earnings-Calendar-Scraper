@@ -40,11 +40,10 @@ def getSource():
 
     return data
 
-def siftData(source):
+def siftSource(source):
 
     try:
         for i in range(0,len(source['data']['rows'])):
-            earningsdate = current_date
             symbol = source['data']['rows'][i]['symbol']
             mrktCap = source['data']['rows'][i]['marketCap']
 

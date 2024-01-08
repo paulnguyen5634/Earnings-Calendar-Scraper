@@ -46,10 +46,11 @@ def getSource():
 def main():
     '''
     Scrapes the NASDAQ earnings calender for earnings releases coming TODAY. 
-    Will not work on holidays/weekends
+    Will return blank when run on holidays/weekends
     '''
     
     data = getSource()
+    print(data)
 
     try:
         for i in range(0,len(data['data']['rows'])):
