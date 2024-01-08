@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup # library to parse HTML documents
 from selenium import webdriver
 import time
 from pprint import pprint
+import os
 
 def getSource(current_date):
     print("Earnings date is: ", current_date)
@@ -76,6 +77,27 @@ def siftSource(source, dictionary, earningsdate):
 
     return dictionary
 
+def getDirList():
+
+    # Get the list of all files and directories
+    path = os.getcwd()
+    dir_list = os.listdir(path)
+
+    return dir_list
+
+def checkFile(csvFile, dir_list):
+
+    if csvFile in dir_list: 
+        # If it is there read the data in
+        df = pd.read_csv(csvFile)
+    else:
+        # If it aint there
+        '''
+        Save the dictionary as a new dataframe and create new csv file from that
+        '''
+
+    return
+
 def main():
 
     # Returns the current local date
@@ -88,6 +110,7 @@ def main():
         'Date': [],
         'MarketCap': [],
     }
+    csvFile = 'Earnings Calender above 500 Mil Mrkt Cap'
 
     for n in range((today - start_date).days + 1):
         earningsdate = start_date + timedelta(days=n)
