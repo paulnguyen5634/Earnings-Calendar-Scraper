@@ -6,19 +6,17 @@ from selenium import webdriver
 import time
 from pprint import pprint
 
-def getSource():
-    # Returns the current local date
-    today = date.today()
-    print("Today date is: ", today)
+def getSource(current_date):
+    print("Today date is: ", current_date)
 
-    year = today.year
+    year = current_date.year
 
-    month = today.month
+    month = current_date.month
     if month < 10:
         month = str(month)
         month = ''.join(('0',month))
         
-    day = today.day
+    day = current_date.day
     if day < 10:
         day = str(day)
         day = ''.join(('0',day))
@@ -37,6 +35,9 @@ def getSource():
     payload = {"date":f"{year}-{month}-{day}"} 
     source = requests.get( url=url, headers=headers, params=payload, verify=True ) 
     data = source.json()
+
+    # As to prevent overbearing the website and getting throttled
+    time.sleep(.25)
 
     return data
 
@@ -75,15 +76,23 @@ def siftSource(source, dictionary, earningsdate):
 
     return dictionary
 
-def createDF():
-
-
-
-    return
-
 def main():
 
-    
+    # Returns the current local date
+    today = date.today()
+    lookBackPeriod = 30
+    start_date = today - timedelta(days=lookBackPeriod)
+    dict_ = {
+        'Symbol': [],
+        'Release': [],
+        'Date': [],
+        'MarketCap': [],
+    }
+
+    for n in range((today - start_date).days + 1):
+        earningsdate = start_date + timedelta(days=n)
+        source = getSource(earningsdate)
+        dict_ = siftSource(source, dict_, earningsdate)
 
     return
 
