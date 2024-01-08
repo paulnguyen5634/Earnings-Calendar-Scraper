@@ -53,13 +53,16 @@ def getSource(current_date):
 
 def siftSource(source, dictionary, earningsdate):
     '''
+    When given a dictionary from the json file generated will sift though the data to append information pertaining to all tickers present 
+    during that earnings day
+
     Args:
         source (dict): dictionary generated from getSource function
         dictionary (dict): dictionary of the dataframe format
-        earningdate (dict): date of when earnings is released
+        earningdate (datetime.date): date of when earnings is released
  
     Returns:
-        data (dict): dictionary format of the json data scraped
+        dictionary (dict): dictionary with associated appended data from json 
     '''
     try:
         for i in range(0,len(source['data']['rows'])):
@@ -96,7 +99,14 @@ def siftSource(source, dictionary, earningsdate):
     return dictionary
 
 def getDirList():
+    '''
+    Goes into the working directory and returns a list of strings containing the names of all files in the directory
 
+    Args:
+ 
+    Returns:
+        dir_list (list): list of all files present in current working directory 
+    '''
     # Get the list of all files and directories
     path = os.getcwd()
     dir_list = os.listdir(path)
@@ -106,6 +116,13 @@ def getDirList():
 def saveData(csvFile, dir_list, dictionary):
     '''
     Checks to see if the csv for prior earnings tickers exists, if it does add new rows, if it doesnt make new csv from Dataframe
+
+    Args:
+        csvFile (str): string name of the csv located in directory or desired save name
+        dir_list (list): list of all files present in current working directory 
+        dictionary (dict): dictionary containing the appended data from siftSource function
+
+    Returns: 
     '''
     if csvFile in dir_list: 
         # If it is there, read the data in
