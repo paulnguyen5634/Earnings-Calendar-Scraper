@@ -50,25 +50,30 @@ def main():
     '''
     
     data = getSource()
-    for i in range(0,len(data['data']['rows'])):
-    
-        mrkt_cap = data['data']['rows'][i]['marketCap']
-        mrkt_cap = mrkt_cap.replace('$', '')
-        mrkt_cap = mrkt_cap.replace(',', '')
+
+    try:
+        for i in range(0,len(data['data']['rows'])):
         
-        forecastEPS = data['data']['rows'][i]['epsForecast']
-        
-        numAnalysts = data['data']['rows'][i]['noOfEsts']
-        
-        releaseTime = data['data']['rows'][i]['time'] 
-        
-        #Only showing companies with abova 1billion$ mrktCap
-        if int(mrkt_cap)/100000000 > 1 and releaseTime == 'time-pre-market':
-            print(data['data']['rows'][i]['symbol'])
-            print(releaseTime)
-            print(data['data']['rows'][i]['marketCap'])
-            print('Forcasted EPS: '+forecastEPS)
-            print('Num analysts: ' + numAnalysts + "\n")
+            mrkt_cap = data['data']['rows'][i]['marketCap']
+            mrkt_cap = mrkt_cap.replace('$', '')
+            mrkt_cap = mrkt_cap.replace(',', '')
+            
+            forecastEPS = data['data']['rows'][i]['epsForecast']
+            
+            numAnalysts = data['data']['rows'][i]['noOfEsts']
+            
+            releaseTime = data['data']['rows'][i]['time'] 
+            
+            #Only showing companies with abova 1billion$ mrktCap
+            if int(mrkt_cap)/100000000 > 1 and releaseTime == 'time-pre-market':
+                print(data['data']['rows'][i]['symbol'])
+                print(releaseTime)
+                print(data['data']['rows'][i]['marketCap'])
+                print('Forcasted EPS: '+forecastEPS)
+                print('Num analysts: ' + numAnalysts + "\n")
+    except TypeError:
+        print('No Earnings Released Today')
+
     return
 
 if __name__ == '__main__':
