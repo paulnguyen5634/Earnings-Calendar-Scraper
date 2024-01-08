@@ -85,17 +85,27 @@ def getDirList():
 
     return dir_list
 
-def checkFile(csvFile, dir_list):
+def checkFile(csvFile, dir_list, dictionary):
 
     if csvFile in dir_list: 
         # If it is there read the data in
         df = pd.read_csv(csvFile)
+
+        df_new = pd.DataFrame.from_dict(dictionary)
+
+        concatenated_df = pd.concat([df, df_new], axis=0)
+        # Keep only the first occurrence of each duplicated row
+        result_df = concatenated_df.drop_duplicates(subset='ID', keep='first')
+        result_df.to_csv("Earnings Calender above 500 Mil Mrkt Cap.csv")
+        
     else:
         # If it aint there
         '''
         Save the dictionary as a new dataframe and create new csv file from that
         '''
-
+        df = pd.DataFrame.from_dict(dictionary)
+        df.to_csv("Earnings Calender above 500 Mil Mrkt Cap.csv")
+        
     return
 
 def main():
