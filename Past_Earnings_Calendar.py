@@ -147,6 +147,7 @@ def saveData(csvFile, dir_list, dictionary):
         '''
         df = pd.DataFrame.from_dict(dictionary)
         df.to_csv("Earnings Calender above 500 Mil Mrkt Cap.csv")
+        print(os.getcwd())
         print('Data has been saved!')
 
     return
